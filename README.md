@@ -14,7 +14,7 @@ doheonek39@gmail.com</br>
 서병찬 :  </br>
 seobc789@gamil.com </br>
 010-2231-9492 </br>
-[Github](https://github.com/git-SeobC)Add commentMore actions
+[Github](https://github.com/git-SeobC)
 
 📚 Rules
 📁 Asset Management
