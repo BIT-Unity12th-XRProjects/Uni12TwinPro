@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4932435166589425312}
   - component: {fileID: 5650016685413803963}
   m_Layer: 0
-  m_Name: Text - Feature
+  m_Name: Text - feature
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uD2B9\uC9D5: ~~~"
+  m_text: ~~
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4590d092eaa315646a71d849d5e23f55, type: 2}
   m_sharedMaterial: {fileID: -303613830237725902, guid: 4590d092eaa315646a71d849d5e23f55,
@@ -511,6 +511,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nameText: {fileID: 4965603654656694098}
+  _birthText: {fileID: 4314036357081584842}
+  _featureText: {fileID: 5650016685413803963}
 --- !u!1 &8597987660043268855
 GameObject:
   m_ObjectHideFlags: 0

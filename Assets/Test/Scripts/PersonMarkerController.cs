@@ -1,20 +1,15 @@
 using TMPro;
 using UnityEngine;
 
-class StudentInfo
-{
-    public int id;
-    public string name;
-    public string birth;
-    // public string 
-}
-
 public class PersonMarkerController : MonoBehaviour
 {
     [SerializeField] private TextMeshPro _nameText;
-
-    public void SetName(string name)
+    [SerializeField] private  TextMeshPro _birthText;
+    [SerializeField] private  TextMeshPro _featureText;
+    public void SetInfo(StudentInfoData info)
     {
-        _nameText.text = name;
+        _nameText.text = info.name;
+        _birthText.text = info.birth;
+        _featureText.text = info.feature;
     }
 }
