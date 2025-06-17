@@ -325,7 +325,7 @@ MonoBehaviour:
   <trackablesChanged>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  m_SerializedLibrary: {fileID: 11400000, guid: dc67ccd8eade24000ba0215153e8267c,
+  m_SerializedLibrary: {fileID: 11400000, guid: f491f19ea6e7343d3a7e1b95b12fb184,
     type: 2}
   m_MaxNumberOfMovingImages: 10
   m_TrackedImagePrefab: {fileID: 0}
@@ -338,11 +338,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2026192380}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f66feed1757964988baab23fad4bc2e3, type: 3}
+  m_Script: {fileID: 11500000, guid: e3ee4a43cdf6448dcacba1d03a931ff1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _arTrackedImageManager: {fileID: 2026192390}
-  _namePanelPrefab: {fileID: 5853602367555132358, guid: cc2cfcec0bad64a1da5614e77a9590a9,
+  screenOcrInterval: 1
+  namePanelPrefab: {fileID: 5853602367555132358, guid: cc2cfcec0bad64a1da5614e77a9590a9,
     type: 3}
 --- !u!1 &2039306338
 GameObject:
