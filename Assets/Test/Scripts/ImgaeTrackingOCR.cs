@@ -16,8 +16,14 @@ public class ImageTrackingOCR : MonoBehaviour
     [SerializeField] private ARTrackedImageManager _arTrackedImageManager;
     
     private bool isCapturing = false;
-    private string[] studentNames = { "김민서", "서병찬", "오융택" , "박광호", "이정균", "표명찬", "김현진", "노형민", "황해원", "신지용", "이형섭", "김경민", "정보연", "김민정", "한태규", "윤종성", "정승호", "김광석"};
     
+    private StudentInfo _studentInfo;
+
+    private void Awake()
+    {
+        _studentInfo = new();
+    }
+
     void OnEnable()
     {
         _arTrackedImageManager.trackablesChanged.AddListener(OnTrackedImagesChanged);
@@ -45,11 +51,11 @@ public class ImageTrackingOCR : MonoBehaviour
         Destroy(screenTex);
 
         StartCoroutine(CallClovaOCR_General(jpgBytes, screenResult => {
-            foreach (string  studentName in studentNames)
+            foreach (var  studentInfo in _studentInfo.Infos)
             {
-                if (studentName == screenResult)
+                if (studentInfo.name == screenResult)
                 {
-                    PlacePanel(image, studentName);
+                    PlacePanel(image, studentInfo);
                 }
             }
         }));
@@ -111,7 +117,7 @@ public class ImageTrackingOCR : MonoBehaviour
     [SerializeField] private GameObject namePanelPrefab;
     private Dictionary<TrackableId, GameObject> panels = new Dictionary<TrackableId, GameObject>();
 
-    private void PlacePanel(ARTrackedImage image, string studentName)
+    private void PlacePanel(ARTrackedImage image, StudentInfoData info)
     {
         if (!panels.TryGetValue(image.trackableId, out var panel))
         {
@@ -120,7 +126,7 @@ public class ImageTrackingOCR : MonoBehaviour
         }
         panel.transform.position = image.transform.position;
         panel.transform.rotation = Camera.main.transform.rotation;
-        panel.GetComponent<PersonMarkerController>().SetName(studentName);
+        panel.GetComponent<PersonMarkerController>().SetInfo(info);
     }
 
     #region DTO Classes
