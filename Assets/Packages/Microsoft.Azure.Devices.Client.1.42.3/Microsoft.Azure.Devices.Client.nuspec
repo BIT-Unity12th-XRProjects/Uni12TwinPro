@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.Azure.Devices.Client</id>
+    <version>1.42.3</version>
+    <title>Microsoft Azure IoT Device Client SDK</title>
+    <authors>Microsoft</authors>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="file">LICENSE</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <icon>nugetIcon.png</icon>
+    <projectUrl>https://github.com/Azure/azure-iot-sdk-csharp</projectUrl>
+    <description>Device SDK for Azure IoT Hub</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>IoT Microsoft Azure IoTHub Device Client .NET AMQP MQTT HTTP</tags>
+    <repository type="git" commit="2a97dd06e82cb67c5be8a7c7d189bef8048a3a86" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.7.2">
+        <dependency id="Microsoft.Azure.Devices.Shared" version="1.30.4" exclude="Build,Analyzers" />
+        <dependency id="Azure.Storage.Blobs" version="12.19.1" exclude="Build,Analyzers" />
+        <dependency id="DotNetty.Codecs.Mqtt" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="DotNetty.Common" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="DotNetty.Handlers" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Azure.Amqp" version="2.5.12" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Win32.Registry" version="4.5.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
+        <dependency id="System.Configuration.ConfigurationManager" version="4.4.1" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net6.0">
+        <dependency id="Microsoft.Azure.Devices.Shared" version="1.30.4" exclude="Build,Analyzers" />
+        <dependency id="Azure.Storage.Blobs" version="12.19.1" exclude="Build,Analyzers" />
+        <dependency id="DotNetty.Codecs.Mqtt" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="DotNetty.Common" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="DotNetty.Handlers" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Azure.Amqp" version="2.5.12" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Win32.Registry" version="4.5.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
+        <dependency id="System.Configuration.ConfigurationManager" version="4.4.1" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Microsoft.Azure.Devices.Shared" version="1.30.4" exclude="Build,Analyzers" />
+        <dependency id="Azure.Storage.Blobs" version="12.19.1" exclude="Build,Analyzers" />
+        <dependency id="DotNetty.Codecs.Mqtt" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="DotNetty.Common" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="DotNetty.Handlers" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Azure.Amqp" version="2.5.12" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Win32.Registry" version="4.5.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
+        <dependency id="System.Configuration.ConfigurationManager" version="4.4.1" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.1">
+        <dependency id="Microsoft.Azure.Devices.Shared" version="1.30.4" exclude="Build,Analyzers" />
+        <dependency id="Azure.Storage.Blobs" version="12.19.1" exclude="Build,Analyzers" />
+        <dependency id="DotNetty.Codecs.Mqtt" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="DotNetty.Common" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="DotNetty.Handlers" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Azure.Amqp" version="2.5.12" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Win32.Registry" version="4.5.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
+        <dependency id="System.Configuration.ConfigurationManager" version="4.4.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Web" targetFramework=".NETFramework4.7.2" />
+    </frameworkAssemblies>
+  </metadata>
+</package>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>DotNetty.Codecs</id>
+    <version>0.7.6</version>
+    <authors>Microsoft</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <projectUrl>https://github.com/Azure/DotNetty/</projectUrl>
+    <description>General purpose codecs for DotNetty</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>socket tcp protocol netty dotnetty network codec</tags>
+    <repository type="git" url="https://github.com/Azure/DotNetty/" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.7.2">
+        <dependency id="DotNetty.Buffers" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="DotNetty.Common" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="DotNetty.Transport" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="System.Collections.Immutable" version="1.5.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net5.0">
+        <dependency id="DotNetty.Buffers" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="DotNetty.Common" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="DotNetty.Transport" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="System.Collections.Immutable" version="1.5.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net6.0">
+        <dependency id="DotNetty.Buffers" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="DotNetty.Common" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="DotNetty.Transport" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="System.Collections.Immutable" version="1.5.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="DotNetty.Buffers" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="DotNetty.Common" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="DotNetty.Transport" version="0.7.6" exclude="Build,Analyzers" />
+        <dependency id="System.Collections.Immutable" version="1.5.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
