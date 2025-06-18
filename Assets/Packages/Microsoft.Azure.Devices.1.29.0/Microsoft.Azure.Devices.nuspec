@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.Azure.Devices</id>
+    <version>1.29.0</version>
+    <title>Microsoft Azure IoT Service Client SDK</title>
+    <authors>Microsoft</authors>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="file">LICENSE</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <icon>nugetIcon.png</icon>
+    <projectUrl>https://github.com/Azure/azure-iot-sdk-csharp</projectUrl>
+    <description>Service SDK for Azure IoT Hub</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>IoT Microsoft Azure IoTHub Service Client SDK Manage Devices .NET</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.5.1">
+        <dependency id="Microsoft.Azure.Devices.Shared" version="1.27.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.3" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Azure.Amqp" version="2.4.7" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Owin" version="4.0.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="12.0.3" exclude="Build,Analyzers" />
+        <dependency id="System.ValueTuple" version="4.5.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETFramework4.7.2">
+        <dependency id="Microsoft.Azure.Devices.Shared" version="1.27.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Azure.Amqp" version="2.4.7" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Rest.ClientRuntime" version="2.3.21" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="12.0.3" exclude="Build,Analyzers" />
+        <dependency id="System.Diagnostics.Contracts" version="4.3.0" exclude="Build,Analyzers" />
+        <dependency id="System.Diagnostics.TraceSource" version="4.3.0" exclude="Build,Analyzers" />
+        <dependency id="System.Net.Requests" version="4.3.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Microsoft.Azure.Devices.Shared" version="1.27.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Azure.Amqp" version="2.4.7" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Rest.ClientRuntime" version="2.3.21" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="12.0.3" exclude="Build,Analyzers" />
+        <dependency id="System.Diagnostics.Contracts" version="4.3.0" exclude="Build,Analyzers" />
+        <dependency id="System.Diagnostics.TraceSource" version="4.3.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.1">
+        <dependency id="Microsoft.Azure.Devices.Shared" version="1.27.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Azure.Amqp" version="2.4.7" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Rest.ClientRuntime" version="2.3.21" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="12.0.3" exclude="Build,Analyzers" />
+        <dependency id="System.Diagnostics.Contracts" version="4.3.0" exclude="Build,Analyzers" />
+        <dependency id="System.Diagnostics.TraceSource" version="4.3.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Configuration" targetFramework=".NETFramework4.5.1" />
+      <frameworkAssembly assemblyName="System.Net.Http" targetFramework=".NETFramework4.5.1, .NETFramework4.7.2" />
+      <frameworkAssembly assemblyName="System.Transactions" targetFramework=".NETFramework4.5.1" />
+      <frameworkAssembly assemblyName="System.Web" targetFramework=".NETFramework4.5.1" />
+      <frameworkAssembly assemblyName="System.Diagnostics.TraceSource" targetFramework=".NETFramework4.7.2" />
+      <frameworkAssembly assemblyName="System.IO" targetFramework=".NETFramework4.7.2" />
+      <frameworkAssembly assemblyName="System.Net.WebSockets.Client" targetFramework=".NETFramework4.7.2" />
+      <frameworkAssembly assemblyName="System.Net.WebSockets" targetFramework=".NETFramework4.7.2" />
+      <frameworkAssembly assemblyName="System.Runtime" targetFramework=".NETFramework4.7.2" />
+      <frameworkAssembly assemblyName="System.Runtime.Serialization.Primitives" targetFramework=".NETFramework4.7.2" />
+      <frameworkAssembly assemblyName="System.Security.Cryptography.Algorithms" targetFramework=".NETFramework4.7.2" />
+      <frameworkAssembly assemblyName="System.Security.Cryptography.Encoding" targetFramework=".NETFramework4.7.2" />
+      <frameworkAssembly assemblyName="System.Security.Cryptography.Primitives" targetFramework=".NETFramework4.7.2" />
+      <frameworkAssembly assemblyName="System.Security.Cryptography.X509Certificates" targetFramework=".NETFramework4.7.2" />
+    </frameworkAssemblies>
+  </metadata>
+</package>
