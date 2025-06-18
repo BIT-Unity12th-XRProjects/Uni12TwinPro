@@ -3,6 +3,7 @@ using Microsoft.Azure.Devices;
 using System.Collections;
 using System.Threading.Tasks;
 using Microsoft.Azure.Devices.Shared;
+using System.Collections.Generic;
 
 public class IoTMonitor : MonoBehaviour
 {
@@ -10,9 +11,10 @@ public class IoTMonitor : MonoBehaviour
     public string connectionString = "HostName=Uni12TwinProTest.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=Ez/vrnK5xfmYrosJCMRRkR7wuIDZGSV/BAIoTNvpoiU=";
     public string targetDeviceId = "azure-samples-test";
     public float checkInterval = 1.0f;
+    public DoorController doorController;
 
     private RegistryManager registryManager;
-    private string lastButtonState;
+    private bool lastButtonState;
 
     IEnumerator Start()
     {
@@ -47,20 +49,27 @@ public class IoTMonitor : MonoBehaviour
     {
         if (twin.Properties.Reported.Contains("buttonState"))
         {
-            string currentState = twin.Properties.Reported["buttonState"].ToString();
-
-            if (lastButtonState == null)
+            object reported = twin.Properties.Reported["buttonState"];
+            if (reported != null)
             {
-                lastButtonState = currentState;
-                Debug.Log($"초기 상태: {currentState}");
-            }
-            else if (lastButtonState != currentState)
-            {
-                Debug.Log($"{System.DateTime.Now} 상태 변경: {currentState}");
-                lastButtonState = currentState;
+                bool currentState = reported.ToString() == "True" ? true : false;
 
-                // Unity 이벤트 시스템과 연동
-                //EventManager.TriggerEvent("ButtonStateChanged", currentState);
+                if (lastButtonState != currentState)
+                {
+                    Debug.Log($"{System.DateTime.Now} 상태 변경: {currentState}");
+                    lastButtonState = currentState;
+
+                    // Unity 이벤트 시스템과 연동
+
+                    if (currentState == true)
+                    {
+                        doorController.OpenDoor();
+                    }
+                    else
+                    {
+                        doorController.CloseDoor();
+                    }
+                }
             }
         }
     }
