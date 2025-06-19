@@ -7,9 +7,9 @@ using System.Collections.Generic;
 
 public class IoTMonitor : MonoBehaviour
 {
-    [Header("Azure IoT 설정")]
-    public string connectionString = "HostName=Uni12TwinPro.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=ts51E0cBODPGFlLbDyoC7pZiHyzbP3wJ/AIoTODruRw=";
-    public string targetDeviceId = "TestDevice";
+    private string connectionString =
+        "HostName=Uni12TwinPro.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=ts51E0cBODPGFlLbDyoC7pZiHyzbP3wJ/AIoTODruRw=";
+    private string targetDeviceId = "TestDevice";
     public float checkInterval = 1.0f;
     public DoorController doorController;
 
