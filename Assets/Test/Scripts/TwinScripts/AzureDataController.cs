@@ -8,8 +8,8 @@ using System.Collections.Generic;
 public class IoTMonitor : MonoBehaviour
 {
     [Header("Azure IoT 설정")]
-    public string connectionString = "HostName=Uni12TwinProTest.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=Ez/vrnK5xfmYrosJCMRRkR7wuIDZGSV/BAIoTNvpoiU=";
-    public string targetDeviceId = "azure-samples-test";
+    public string connectionString = "HostName=Uni12TwinPro.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=ts51E0cBODPGFlLbDyoC7pZiHyzbP3wJ/AIoTODruRw=";
+    public string targetDeviceId = "TestDevice";
     public float checkInterval = 1.0f;
     public DoorController doorController;
 
@@ -47,9 +47,9 @@ public class IoTMonitor : MonoBehaviour
 
     void ProcessTwinData(Twin twin)
     {
-        if (twin.Properties.Reported.Contains("buttonState"))
+        if (twin.Properties.Reported.Contains("toggleState"))
         {
-            object reported = twin.Properties.Reported["buttonState"];
+            object reported = twin.Properties.Reported["toggleState"];
             if (reported != null)
             {
                 bool currentState = reported.ToString() == "True" ? true : false;
