@@ -1,0 +1,7 @@
+<linker>
+  <assembly fullname="Microsoft.Azure.Devices.Shared">
+    <!-- TwinJsonConverter와 Twin 본체, 생성자까지 모두 보존 -->
+    <type fullname="Microsoft.Azure.Devices.Shared.TwinJsonConverter" preserve="all" />
+    <type fullname="Microsoft.Azure.Devices.Shared.Twin" preserve="all" />
+  </assembly>
+</linker>

@@ -4,9 +4,12 @@ using System.Collections;
 using System.Threading.Tasks;
 using Microsoft.Azure.Devices.Shared;
 using System.Collections.Generic;
+using TMPro;
 
 public class IoTMonitor : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI _stateText;
+    
     private string connectionString =
         "HostName=Uni12TwinPro.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=ts51E0cBODPGFlLbDyoC7pZiHyzbP3wJ/AIoTODruRw=";
     private string targetDeviceId = "TestDevice";
@@ -30,11 +33,13 @@ public class IoTMonitor : MonoBehaviour
         while (true)
         {
             Task<Twin> twinTask = registryManager.GetTwinAsync(targetDeviceId);
+            
             yield return new WaitUntil(() => twinTask.IsCompleted);
 
             if (twinTask.Exception != null)
             {
-                Debug.LogError($"트윈 조회 실패: {twinTask.Exception.Message}");
+                Debug.LogError($"트윈 조회 실패: {twinTask.Exception}{twinTask.Exception.Message}");
+                _stateText.text = $"트윈 조회 실패: {twinTask.Exception}{twinTask.Exception.Message}";
                 yield break;
             }
 
@@ -57,6 +62,7 @@ public class IoTMonitor : MonoBehaviour
                 if (lastButtonState != currentState)
                 {
                     Debug.Log($"{System.DateTime.Now} 상태 변경: {currentState}");
+                    _stateText.text = $"{System.DateTime.Now} 상태 변경: {currentState}";
                     lastButtonState = currentState;
 
                     // Unity 이벤트 시스템과 연동
