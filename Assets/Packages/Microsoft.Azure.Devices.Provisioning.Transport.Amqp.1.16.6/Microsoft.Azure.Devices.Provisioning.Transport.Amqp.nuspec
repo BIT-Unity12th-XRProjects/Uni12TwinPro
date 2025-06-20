@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.Azure.Devices.Provisioning.Transport.Amqp</id>
+    <version>1.16.6</version>
+    <title>Microsoft Azure IoT Provisioning Device Client AMQP Transport</title>
+    <authors>Microsoft</authors>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="file">LICENSE</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <icon>nugetIcon.png</icon>
+    <projectUrl>https://github.com/Azure/azure-iot-sdk-csharp</projectUrl>
+    <description>Provisioning Device Client AMQP Transport for Azure IoT Devices</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>Microsoft Azure IoT Provisioning Device Client .NET AMQP</tags>
+    <repository type="git" commit="a8ae077b20c4042e1fe34e61d3dff052a02ab4db" />
+    <dependencies>
+      <group targetFramework="net6.0">
+        <dependency id="Microsoft.Azure.Devices.Provisioning.Client" version="1.19.4" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Azure.Devices.Shared" version="1.30.4" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Azure.Amqp" version="2.5.12" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Microsoft.Azure.Devices.Provisioning.Client" version="1.19.4" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Azure.Devices.Shared" version="1.30.4" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Azure.Amqp" version="2.5.12" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.1">
+        <dependency id="Microsoft.Azure.Devices.Provisioning.Client" version="1.19.4" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Azure.Devices.Shared" version="1.30.4" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Azure.Amqp" version="2.5.12" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
