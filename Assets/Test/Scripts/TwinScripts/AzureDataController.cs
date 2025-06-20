@@ -1,38 +1,40 @@
 using UnityEngine;
 using Microsoft.Azure.Devices;
+using Microsoft.Azure.Devices.Client;
 using System.Collections;
 using System.Threading.Tasks;
 using Microsoft.Azure.Devices.Shared;
 using System.Collections.Generic;
 using TMPro;
 
-public class IoTMonitor : MonoBehaviour
+public class AzureDataController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _stateText;
     
-    private string connectionString =
-        "HostName=Uni12TwinPro.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=ts51E0cBODPGFlLbDyoC7pZiHyzbP3wJ/AIoTODruRw=";
-    private string targetDeviceId = "TestDevice";
-    public float checkInterval = 1.0f;
-    public DoorController doorController;
-
     private RegistryManager registryManager;
     private bool lastButtonState;
 
+    private string _connectionSendString =
+        "HostName=Uni12TwinPro.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=ts51E0cBODPGFlLbDyoC7pZiHyzbP3wJ/AIoTODruRw=";
+    private string _targetDeviceId = "TestDevice";
+    
+    public float checkInterval = 1.0f;
+    public DoorController doorController;
+
     IEnumerator Start()
     {
-        // Azure IoT Hub 연결 초기화
-        registryManager = RegistryManager.CreateFromConnectionString(connectionString);
+        // Azure IoT Hub Send 연결 초기화
+        registryManager = RegistryManager.CreateFromConnectionString(_connectionSendString);
 
-        // 코루틴 시작
-        yield return StartCoroutine(CheckDeviceTwinRoutine());
+        // IoT Hub에서 메시지 수신
+        yield return StartCoroutine(CheckDoorCondition());
     }
 
-    IEnumerator CheckDeviceTwinRoutine()
+    IEnumerator CheckDoorCondition()
     {
         while (true)
         {
-            Task<Twin> twinTask = registryManager.GetTwinAsync(targetDeviceId);
+            Task<Twin> twinTask = registryManager.GetTwinAsync(_targetDeviceId);
             
             yield return new WaitUntil(() => twinTask.IsCompleted);
 
