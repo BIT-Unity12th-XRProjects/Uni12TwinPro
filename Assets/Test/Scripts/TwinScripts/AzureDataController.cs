@@ -81,7 +81,20 @@ public class AzureDataController : MonoBehaviour
             }
         }
     }
-
+    
+    public async Task SendLEDStateAsync(bool ledState)
+    {
+        Twin twin = await registryManager.GetTwinAsync(_targetDeviceId);
+        twin.Properties.Desired["ledState"] = ledState;
+        Debug.Log($"current led state : {ledState}");
+            
+        await registryManager.UpdateTwinAsync(
+            _targetDeviceId,
+            twin,
+            "*"
+        );
+    }  
+    
     void OnDestroy()
     {
         if (registryManager != null)
