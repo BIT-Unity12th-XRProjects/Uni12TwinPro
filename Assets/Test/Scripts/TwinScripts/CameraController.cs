@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    public enum MovementType
+    {
+        ToTarget,
+        ToDefault
+    }
+
     [Header("위치 설정")]
     [SerializeField] private Transform _defaultLookAtTarget;
 
@@ -12,58 +18,57 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float _rotationSpeed = 5f;  // 회전 속도
 
     [SerializeField] private Transform _defaultPosition;
+
+    public event Action OnCameraMovementToTargetComplete;
+    public event Action OnCameraMovementToDefaultComplete;
+
     public void ReturnToDefaultPosition()
     {
-        StartCoroutine(C_MoveCamera(Camera.main.transform.position, _defaultPosition.position, _defaultLookAtTarget));
-    }
-    private IEnumerator C_MoveCamera(Vector3 from, Vector3 end, Transform lookAtTarget)
-    {
-        Debug.Log($"start : {from} \n end : {end}");
-        float elapsedTime = 0f;
-        Transform camTransform = Camera.main.transform;
-        Quaternion startRotation = camTransform.rotation;
-
-        // 최종 위치에서 타겟 바라보는 회전값 미리 계산
-        Vector3 finalDirection = lookAtTarget.position - end;
-        Quaternion finalRotation = Quaternion.LookRotation(finalDirection);
-
-        while (elapsedTime < _moveDuration)
+        if (_defaultPosition == null)
         {
-            float progress = elapsedTime / _moveDuration;
+            Debug.LogError("Default position is not assigned!");
+            return;
+        }
+        StopAllCoroutines();
+        StartCoroutine(C_MoveCamera(Camera.main.transform.position, _defaultPosition.position, _defaultLookAtTarget, MovementType.ToDefault));
+    }
 
-            // 위치 보간 (이징 적용)
-            camTransform.position = Vector3.Lerp(
-                from,
-                end,
-                EaseInOutCubic(progress) // 커스텀 이징 함수
-            );
+    public void MoveToPosition(Transform transform, Transform lookAtTarget = null)
+    {
+        if (lookAtTarget == null) lookAtTarget = transform;
 
-            // 회전 보간
-            camTransform.rotation = Quaternion.Slerp(
-                startRotation,
-                finalRotation,
-                progress
-            );
+        StopAllCoroutines();
+        StartCoroutine(C_MoveCamera(Camera.main.transform.position, transform.position, lookAtTarget, MovementType.ToTarget));
+    }
 
-            elapsedTime += Time.deltaTime;
+    private IEnumerator C_MoveCamera(Vector3 startPos, Vector3 endPos, Transform lookAtTarget, MovementType type)
+    {
+        float elapsed = 0f;
+        Quaternion startRot = Camera.main.transform.rotation;
+        Vector3 lookDirection = lookAtTarget.position - endPos;
+        Quaternion endRot = Quaternion.LookRotation(lookDirection);
+
+        while (elapsed < _moveDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / _moveDuration);
+            Camera.main.transform.position = Vector3.Lerp(startPos, endPos, Mathf.SmoothStep(0f, 1f, t));
+            Camera.main.transform.rotation = Quaternion.Slerp(startRot, endRot, Mathf.SmoothStep(0f, 1f, t));
             yield return null;
         }
 
-        // 최종 위치/회전 고정
-        camTransform.position = end;
-        camTransform.rotation = finalRotation;
-    }
+        Camera.main.transform.position = endPos;
+        Camera.main.transform.rotation = endRot;
 
-    // 부드러운 이동을 위한 이징 함수
-    private float EaseInOutCubic(float t)
-    {
-        return t < 0.5f
-            ? 4f * t * t * t
-            : 1f - Mathf.Pow(-2f * t + 2f, 3) / 2f;
-    }
-
-    public void MoveToPosition(Transform transform)
-    {
-        StartCoroutine(C_MoveCamera(Camera.main.transform.position, transform.position, transform));
+        // 이동 유형에 따라 다른 이벤트 발생
+        switch (type)
+        {
+            case MovementType.ToTarget:
+                OnCameraMovementToTargetComplete?.Invoke();
+                break;
+            case MovementType.ToDefault:
+                OnCameraMovementToDefaultComplete?.Invoke();
+                break;
+        }
     }
 }
