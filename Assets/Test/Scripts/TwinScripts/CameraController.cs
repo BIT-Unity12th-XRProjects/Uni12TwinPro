@@ -22,6 +22,8 @@ public class CameraController : MonoBehaviour
     public event Action OnCameraMovementToTargetComplete;
     public event Action OnCameraMovementToDefaultComplete;
 
+    public MovementType CurrentState { get; private set; } = MovementType.ToDefault;
+
     public void ReturnToDefaultPosition()
     {
         if (_defaultPosition == null)
@@ -65,9 +67,11 @@ public class CameraController : MonoBehaviour
         {
             case MovementType.ToTarget:
                 UIManager.Instance.EnableBackButton();
+                CurrentState = MovementType.ToTarget;
                 break;
             case MovementType.ToDefault:
                 UIManager.Instance.DisableBackButton();
+                CurrentState = MovementType.ToDefault;
                 break;
         }
     }
