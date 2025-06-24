@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -8,12 +9,11 @@ public class TouchDetectManager : MonoBehaviour, IPointerClickHandler
 
     private CameraController _cameraController;
 
+    public event Action OnTouchDetectedEvent;
+
     private void Start()
     {
-        if (_cameraController == null)
-        {
-            _cameraController = Camera.main.GetComponent<CameraController>();
-        }
+        _cameraController = Camera.main.GetComponent<CameraController>();
 
         if (_cameraMovePosition == null)
         {
@@ -30,6 +30,13 @@ public class TouchDetectManager : MonoBehaviour, IPointerClickHandler
     {
         Debug.Log($"{name} 오브젝트가 클릭 또는 터치되었습니다!");
 
-        _cameraController.MoveToPosition(_cameraMovePosition, _lookAtTarget);
+        if (_cameraController.CurrentState == CameraController.MovementType.ToDefault)
+        {
+            _cameraController.MoveToPosition(_cameraMovePosition, _lookAtTarget);
+        }
+        else if (_cameraController.CurrentState == CameraController.MovementType.ToTarget)
+        {
+            OnTouchDetectedEvent?.Invoke();
+        }
     }
 }
