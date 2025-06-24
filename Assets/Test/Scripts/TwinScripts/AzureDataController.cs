@@ -17,7 +17,7 @@ public class AzureDataController : MonoBehaviour
     private RegistryManager _registryManager;
     private bool _lastButtonState;
 
-    private string _connectionSendString =
+    private string _connectionRegistryString =
         "HostName=Uni12TwinPro.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=ts51E0cBODPGFlLbDyoC7pZiHyzbP3wJ/AIoTODruRw=";
     private string _targetDeviceId = "TestDevice";
 
@@ -25,7 +25,7 @@ public class AzureDataController : MonoBehaviour
     IEnumerator Start()
     {
         // Azure IoT Hub Send 연결 초기화
-        _registryManager = RegistryManager.CreateFromConnectionString(_connectionSendString);
+        registryManager = RegistryManager.CreateFromConnectionString(_connectionRegistryString);
 
         // IoT Hub에서 메시지 수신
         yield return StartCoroutine(CheckDoorCondition());
@@ -70,7 +70,6 @@ public class AzureDataController : MonoBehaviour
                     _lastButtonState = currentState;
 
                     // Unity 이벤트 시스템과 연동
-
                     if (currentState == true)
                     {
                         _doorController.OpenDoor();
@@ -86,13 +85,14 @@ public class AzureDataController : MonoBehaviour
 
     public async Task SendLEDStateAsync(bool ledState)
     {
-        Twin twin = await _registryManager.GetTwinAsync(_targetDeviceId);
-        twin.Properties.Desired["ledState"] = ledState;
         Debug.Log($"current led state : {ledState}");
+        
+        string patch = 
+        $"{{\"properties\":{{\"desired\":{{\"ledState\":{ledState.ToString().ToLowerInvariant()}}}}}}}";
 
-        await _registryManager.UpdateTwinAsync(
+        await registryManager.UpdateTwinAsync(
             _targetDeviceId,
-            twin,
+            patch,
             "*"
         );
     }
