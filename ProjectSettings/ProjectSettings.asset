@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: 3Team
+  companyName: Art-win
   productName: Uni12TwinPro
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -147,6 +147,11 @@ PlayerSettings:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: -6122771651556369562, guid: e2f869774b12e400996eb546603602e3, type: 2}
+  - {fileID: -2470385514627339397, guid: 07124a6b2286348128e5aecd8a4b3b80, type: 2}
+  - {fileID: 11400000, guid: 302e9f36808117f4184b07b05ca5bb47, type: 2}
+  - {fileID: 4800000, guid: c9f956787b1d945e7b36e0516201fc76, type: 3}
+  - {fileID: 4800000, guid: 0945859e5a1034c2cb6dce53cb4fb899, type: 3}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -851,7 +856,8 @@ PlayerSettings:
     Android: 1
   il2cppCompilerConfiguration: {}
   il2cppCodeGeneration: {}
-  il2cppStacktraceInformation: {}
+  il2cppStacktraceInformation:
+    Android: 1
   managedStrippingLevel: {}
   incrementalIl2cppBuild: {}
   suppressCommonWarnings: 1
