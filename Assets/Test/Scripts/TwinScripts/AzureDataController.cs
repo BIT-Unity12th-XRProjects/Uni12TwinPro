@@ -25,7 +25,7 @@ public class AzureDataController : MonoBehaviour
     IEnumerator Start()
     {
         // Azure IoT Hub Send 연결 초기화
-        registryManager = RegistryManager.CreateFromConnectionString(_connectionRegistryString);
+        _registryManager = RegistryManager.CreateFromConnectionString(_connectionRegistryString);
 
         // IoT Hub에서 메시지 수신
         yield return StartCoroutine(CheckDoorCondition());
@@ -90,7 +90,7 @@ public class AzureDataController : MonoBehaviour
         string patch = 
         $"{{\"properties\":{{\"desired\":{{\"ledState\":{ledState.ToString().ToLowerInvariant()}}}}}}}";
 
-        await registryManager.UpdateTwinAsync(
+        await _registryManager.UpdateTwinAsync(
             _targetDeviceId,
             patch,
             "*"
