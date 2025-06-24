@@ -13,11 +13,13 @@ public class AzureDataController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _stateText;
     [SerializeField] private DoorController _doorController;
-
+    [SerializeField] private WindowController _windowController;
+    
     private RegistryManager _registryManager;
-    private bool _lastButtonState;
+    private bool _lastDoorState;
+    private bool _lastWindowState;
 
-    private string _connectionSendString =
+    private string _connectionRegistryString =
         "HostName=Uni12TwinPro.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=ts51E0cBODPGFlLbDyoC7pZiHyzbP3wJ/AIoTODruRw=";
     private string _targetDeviceId = "TestDevice";
 
@@ -25,10 +27,11 @@ public class AzureDataController : MonoBehaviour
     IEnumerator Start()
     {
         // Azure IoT Hub Send 연결 초기화
-        _registryManager = RegistryManager.CreateFromConnectionString(_connectionSendString);
+        _registryManager = RegistryManager.CreateFromConnectionString(_connectionRegistryString);
 
         // IoT Hub에서 메시지 수신
         yield return StartCoroutine(CheckDoorCondition());
+        // yield return StartCoroutine(CheckWindowCondition());
     }
 
     IEnumerator CheckDoorCondition()
@@ -42,7 +45,6 @@ public class AzureDataController : MonoBehaviour
             if (twinTask.Exception != null)
             {
                 Debug.LogError($"트윈 조회 실패: {twinTask.Exception}{twinTask.Exception.Message}");
-                _stateText.text = $"트윈 조회 실패: {twinTask.Exception}{twinTask.Exception.Message}";
                 yield break;
             }
 
@@ -53,24 +55,43 @@ public class AzureDataController : MonoBehaviour
         }
     }
 
+    // IEnumerator CheckWindowCondition()
+    // {
+    //     while (true)
+    //     {
+    //         Task<Twin> twinTask = _registryManager.GetTwinAsync(_targetDeviceId);
+    //
+    //         yield return new WaitUntil(() => twinTask.IsCompleted);
+    //
+    //         if (twinTask.Exception != null)
+    //         {
+    //             Debug.LogError($"트윈 조회 실패: {twinTask.Exception}{twinTask.Exception.Message}");
+    //             _stateText.text = $"트윈 조회 실패: {twinTask.Exception}{twinTask.Exception.Message}";
+    //             yield break;
+    //         }
+    //
+    //         Twin twin = twinTask.Result;
+    //         ProcessWindowTwinData(twin);
+    //
+    //         yield return new WaitForSeconds(CheckInterval);
+    //     }
+    // }
+
     void ProcessTwinData(Twin twin)
     {
-        // 토글 스위치 상태 확인
-        if (twin.Properties.Reported.Contains("toggleState"))
+        // Door State Apply
+        if (twin.Properties.Reported.Contains("doorState"))
         {
-            object reported = twin.Properties.Reported["toggleState"];
+            object reported = twin.Properties.Reported["doorState"];
             if (reported != null)
             {
                 bool currentState = reported.ToString() == "True" ? true : false;
 
-                if (_lastButtonState != currentState)
+                if (_lastDoorState != currentState)
                 {
-                    Debug.Log($"{System.DateTime.Now} 상태 변경: {currentState}");
-                    _stateText.text = $"{System.DateTime.Now} 상태 변경: {currentState}";
-                    _lastButtonState = currentState;
+                    _lastDoorState = currentState;
 
                     // Unity 이벤트 시스템과 연동
-
                     if (currentState == true)
                     {
                         _doorController.OpenDoor();
@@ -82,17 +103,70 @@ public class AzureDataController : MonoBehaviour
                 }
             }
         }
+
+        // Window State Apply
+        if (twin.Properties.Reported.Contains("windowState"))
+        {
+            object reported = twin.Properties.Reported["windowState"];
+            if (reported != null)
+            {
+                bool currentState = reported.ToString() == "True" ? true : false;
+
+                if (_lastWindowState != currentState)
+                {
+                    _lastWindowState = currentState;
+
+                    if (currentState == true)
+                    {
+                        _windowController.OpenWindow();
+                    }
+                    else
+                    {
+                        _windowController.CloseWindow();
+                    }
+                }
+            }
+        }
     }
+    
+    // void ProcessWindowTwinData(Twin twin)
+    // {
+    //     // 토글 스위치 상태 확인
+    //     if (twin.Properties.Reported.Contains("windowState"))
+    //     {
+    //         object reported = twin.Properties.Reported["windowState"];
+    //         if (reported != null)
+    //         {
+    //             bool currentState = reported.ToString() == "True" ? true : false;
+    //
+    //             if (_lastDoorState != currentState)
+    //             {
+    //                 _lastDoorState = currentState;
+    //
+    //                 // Unity 이벤트 시스템과 연동
+    //                 if (currentState == true)
+    //                 {
+    //                     _windowController.OpenWindow();
+    //                 }
+    //                 else
+    //                 {
+    //                     _windowController.CloseWindow();
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
     public async Task SendLEDStateAsync(bool ledState)
     {
-        Twin twin = await _registryManager.GetTwinAsync(_targetDeviceId);
-        twin.Properties.Desired["ledState"] = ledState;
         Debug.Log($"current led state : {ledState}");
+        
+        string patch = 
+        $"{{\"properties\":{{\"desired\":{{\"ledState\":{ledState.ToString().ToLowerInvariant()}}}}}}}";
 
         await _registryManager.UpdateTwinAsync(
             _targetDeviceId,
-            twin,
+            patch,
             "*"
         );
     }
