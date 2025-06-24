@@ -64,10 +64,10 @@ public class CameraController : MonoBehaviour
         switch (type)
         {
             case MovementType.ToTarget:
-                OnCameraMovementToTargetComplete?.Invoke();
+                UIManager.Instance.EnableBackButton();
                 break;
             case MovementType.ToDefault:
-                OnCameraMovementToDefaultComplete?.Invoke();
+                UIManager.Instance.DisableBackButton();
                 break;
         }
     }
