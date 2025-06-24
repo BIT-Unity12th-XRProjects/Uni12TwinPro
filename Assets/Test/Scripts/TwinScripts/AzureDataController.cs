@@ -6,21 +6,22 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Devices.Shared;
 using System.Collections.Generic;
 using TMPro;
+using Test.Scripts.TwinScripts;
+using System;
 
 public class AzureDataController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _stateText;
-    
-    private RegistryManager registryManager;
-    private bool lastButtonState;
+    [SerializeField] private DoorController _doorController;
+
+    private RegistryManager _registryManager;
+    private bool _lastButtonState;
 
     private string _connectionRegistryString =
         "HostName=Uni12TwinPro.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=ts51E0cBODPGFlLbDyoC7pZiHyzbP3wJ/AIoTODruRw=";
     private string _targetDeviceId = "TestDevice";
-    
-    public float checkInterval = 1.0f;
-    public DoorController doorController;
 
+    public float CheckInterval = 1.0f;
     IEnumerator Start()
     {
         // Azure IoT Hub Send 연결 초기화
@@ -34,8 +35,8 @@ public class AzureDataController : MonoBehaviour
     {
         while (true)
         {
-            Task<Twin> twinTask = registryManager.GetTwinAsync(_targetDeviceId);
-            
+            Task<Twin> twinTask = _registryManager.GetTwinAsync(_targetDeviceId);
+
             yield return new WaitUntil(() => twinTask.IsCompleted);
 
             if (twinTask.Exception != null)
@@ -48,12 +49,13 @@ public class AzureDataController : MonoBehaviour
             Twin twin = twinTask.Result;
             ProcessTwinData(twin);
 
-            yield return new WaitForSeconds(checkInterval);
+            yield return new WaitForSeconds(CheckInterval);
         }
     }
 
     void ProcessTwinData(Twin twin)
     {
+        // 토글 스위치 상태 확인
         if (twin.Properties.Reported.Contains("toggleState"))
         {
             object reported = twin.Properties.Reported["toggleState"];
@@ -61,26 +63,26 @@ public class AzureDataController : MonoBehaviour
             {
                 bool currentState = reported.ToString() == "True" ? true : false;
 
-                if (lastButtonState != currentState)
+                if (_lastButtonState != currentState)
                 {
                     Debug.Log($"{System.DateTime.Now} 상태 변경: {currentState}");
                     _stateText.text = $"{System.DateTime.Now} 상태 변경: {currentState}";
-                    lastButtonState = currentState;
+                    _lastButtonState = currentState;
 
                     // Unity 이벤트 시스템과 연동
                     if (currentState == true)
                     {
-                        doorController.OpenDoor();
+                        _doorController.OpenDoor();
                     }
                     else
                     {
-                        doorController.CloseDoor();
+                        _doorController.CloseDoor();
                     }
                 }
             }
         }
     }
-    
+
     public async Task SendLEDStateAsync(bool ledState)
     {
         Debug.Log($"current led state : {ledState}");
@@ -93,13 +95,13 @@ public class AzureDataController : MonoBehaviour
             patch,
             "*"
         );
-    }  
-    
+    }
+
     void OnDestroy()
     {
-        if (registryManager != null)
+        if (_registryManager != null)
         {
-            registryManager.CloseAsync().Wait();
+            _registryManager.CloseAsync().Wait();
         }
     }
 }

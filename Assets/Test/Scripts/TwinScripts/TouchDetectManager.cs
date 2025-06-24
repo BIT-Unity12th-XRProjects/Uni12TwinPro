@@ -24,18 +24,6 @@ public class TouchDetectManager : MonoBehaviour, IPointerClickHandler
         {
             _lookAtTarget = transform;
         }
-
-        _cameraController.OnCameraMovementToTargetComplete += UIManager.Instance.EnableBackButton;
-        _cameraController.OnCameraMovementToDefaultComplete += UIManager.Instance.DisableBackButton;
-    }
-
-    private void OnDestroy()
-    {
-        if (_cameraController != null)
-        {
-            _cameraController.OnCameraMovementToTargetComplete -= UIManager.Instance.EnableBackButton;
-            _cameraController.OnCameraMovementToDefaultComplete -= UIManager.Instance.DisableBackButton;
-        }
     }
 
     public void OnPointerClick(PointerEventData eventData)

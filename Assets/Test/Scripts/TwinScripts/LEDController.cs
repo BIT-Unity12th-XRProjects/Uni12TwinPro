@@ -14,12 +14,10 @@ namespace Test.Scripts.TwinScripts
         private RegistryManager  _registryManager;
         private bool _ledState = false;
 
-        
         public async void OnClickLEDButton()
         {
             _ledState = !_ledState;
             await _azureDataController.SendLEDStateAsync(_ledState);
         }
-
     }
 }
