@@ -1,5 +1,6 @@
 using Microsoft.Azure.Devices;
 using Microsoft.Azure.Devices.Shared;
+using Microsoft.CSharp.RuntimeBinder;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,12 +12,10 @@ static class JsonSetup
     static void Configure()
     {
         JsonConverter _keep = new TwinJsonConverter();
-        // JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-        // {
-        //     Converters = new List<JsonConverter> { _keep }
-        // };
 
         X509Thumbprint _keep2 = new X509Thumbprint();
+
+        TwinCollection _keep3 = new TwinCollection();
     }
 }
 
