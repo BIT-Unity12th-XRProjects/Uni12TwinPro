@@ -1,23 +1,21 @@
 using UnityEngine;
 using Microsoft.Azure.Devices;
-using Microsoft.Azure.Devices.Client;
 using System.Collections;
 using System.Threading.Tasks;
 using Microsoft.Azure.Devices.Shared;
-using System.Collections.Generic;
 using TMPro;
-using Test.Scripts.TwinScripts;
-using System;
 
 public class AzureDataController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _stateText;
     [SerializeField] private DoorController _doorController;
     [SerializeField] private WindowController _windowController;
-    
+    [SerializeField] private WindowController _windowController2;
+
     private RegistryManager _registryManager;
     private bool _lastDoorState;
     private bool _lastWindowState;
+    private bool _lastWindowState2;
 
     private string _connectionRegistryString =
         "HostName=Uni12TwinPro.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=ts51E0cBODPGFlLbDyoC7pZiHyzbP3wJ/AIoTODruRw=";
@@ -127,6 +125,28 @@ public class AzureDataController : MonoBehaviour
                 }
             }
         }
+        if (twin.Properties.Reported.Contains("windowState2"))
+        {
+            object reported = twin.Properties.Reported["windowState2"];
+            if (reported != null)
+            {
+                bool currentState = reported.ToString() == "True" ? true : false;
+
+                if (_lastWindowState2 != currentState)
+                {
+                    _lastWindowState2 = currentState;
+
+                    if (currentState == true)
+                    {
+                        _windowController2.OpenWindow();
+                    }
+                    else
+                    {
+                        _windowController2.CloseWindow();
+                    }
+                }
+            }
+        }
     }
     
     // void ProcessWindowTwinData(Twin twin)
@@ -157,12 +177,26 @@ public class AzureDataController : MonoBehaviour
     //     }
     // }
 
-    public async Task SendLEDStateAsync(bool ledState)
-    {
-        Debug.Log($"current led state : {ledState}");
+    //public async Task SendLEDStateAsync(bool ledState)
+    //{
+    //    Debug.Log($"current led state : {ledState}");
         
-        string patch = 
-        $"{{\"properties\":{{\"desired\":{{\"ledState\":{ledState.ToString().ToLowerInvariant()}}}}}}}";
+    //    string patch = 
+    //    $"{{\"properties\":{{\"desired\":{{\"ledState\":{ledState.ToString().ToLowerInvariant()}}}}}}}";
+
+    //    await _registryManager.UpdateTwinAsync(
+    //        _targetDeviceId,
+    //        patch,
+    //        "*"
+    //    );
+    //}
+
+    public async Task SendRemotePCStateAsync(bool remotePCState, uint pcId)
+    {
+        Debug.Log($"current remote pc state : {remotePCState}");
+
+        string patch =
+        $"{{\"properties\":{{\"desired\":{{\"remotePCState{pcId}\":{remotePCState.ToString().ToLowerInvariant()}}}}}}}";
 
         await _registryManager.UpdateTwinAsync(
             _targetDeviceId,
