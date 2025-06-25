@@ -13,6 +13,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private string _arSceneName;
     [SerializeField] private Button _backButton;
 
+    public event Action EnableArrowUIEvent;
+    public event Action DisableArrowUIEvent;
+
     private void Awake()
     {
         if (Instance == null)
@@ -61,5 +64,15 @@ public class UIManager : MonoBehaviour
             return;
         }
         SceneManager.LoadScene(_arSceneName);
+    }
+
+    public void EnableArrowUI()
+    {
+        EnableArrowUIEvent?.Invoke();
+    }
+
+    public void DisableArrowUI()
+    {
+        DisableArrowUIEvent?.Invoke();
     }
 }

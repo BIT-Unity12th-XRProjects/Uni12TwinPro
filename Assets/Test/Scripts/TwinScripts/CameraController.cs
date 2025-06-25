@@ -31,6 +31,7 @@ public class CameraController : MonoBehaviour
             Debug.LogError("Default position is not assigned!");
             return;
         }
+        UIManager.Instance.DisableBackButton();
         StopAllCoroutines();
         StartCoroutine(C_MoveCamera(Camera.main.transform.position, _defaultPosition.position, _defaultLookAtTarget, MovementType.ToDefault));
     }
@@ -38,6 +39,7 @@ public class CameraController : MonoBehaviour
     public void MoveToPosition(Transform transform, Transform lookAtTarget = null)
     {
         if (lookAtTarget == null) lookAtTarget = transform;
+        UIManager.Instance.DisableArrowUI();
 
         StopAllCoroutines();
         StartCoroutine(C_MoveCamera(Camera.main.transform.position, transform.position, lookAtTarget, MovementType.ToTarget));
@@ -70,7 +72,7 @@ public class CameraController : MonoBehaviour
                 CurrentState = MovementType.ToTarget;
                 break;
             case MovementType.ToDefault:
-                UIManager.Instance.DisableBackButton();
+                UIManager.Instance.EnableArrowUI();
                 CurrentState = MovementType.ToDefault;
                 break;
         }
