@@ -26,54 +26,91 @@ public class ImageTrackingOCR : MonoBehaviour
 
     void OnEnable()
     {
-        _arTrackedImageManager.trackablesChanged.AddListener(OnTrackedImagesChanged);
-        // screenOcrRoutine = StartCoroutine(ScreenOcrLoop());
+        // _arTrackedImageManager.trackablesChanged.AddListener(OnTrackedImagesChanged);
     }
 
     void OnDisable()
     {
-        _arTrackedImageManager.trackablesChanged.RemoveListener(OnTrackedImagesChanged);
+        // _arTrackedImageManager.trackablesChanged.RemoveListener(OnTrackedImagesChanged);
         StopAllCoroutines();
     }
 
-    private IEnumerator ScreenOcrLoop(ARTrackedImage image)
+    public void StartCapture()
+    {
+        StartCoroutine(ScreenOcrLoop());
+    }
+    private IEnumerator ScreenOcrLoop()
     {
         if (isCapturing)
         {
             yield break;
         }
-
+        
         isCapturing = true;
         yield return new WaitForEndOfFrame();
 
         Texture2D screenTex = ScreenCapture.CaptureScreenshotAsTexture();
+        // int captureWidth = 200;
+        // int captureHeight = 200;
+        // int startX = (Screen.width - captureWidth) / 2; // 화면 중앙 X 좌표
+        // int startY = (Screen.height - captureHeight) / 2; // 화면 중앙 Y 좌표
+        //
+        // screenTex.ReadPixels(new Rect(startX, startY, captureWidth, captureHeight), 0, 0);
+        // screenTex.Apply();
+        //
         byte[] jpgBytes = screenTex.EncodeToJPG(90);
         Destroy(screenTex);
 
         StartCoroutine(CallClovaOCR_General(jpgBytes, screenResult => {
-            foreach (var  studentInfo in _studentInfo.Infos)
+            // string screenResultRemoveENG = RemoveEnglish(screenResult);
+            // Debug.Log($"OCR Captured Image: {screenResultRemoveENG}");
+            if (IsContainStudentName(screenResult, out StudentInfoData student))
             {
-                if (studentInfo.name == screenResult)
-                {
-                    PlacePanel(image, studentInfo);
-                }
+                PlacePanel(student);
             }
         }));
-
     }
 
-    private void OnTrackedImagesChanged(ARTrackablesChangedEventArgs<ARTrackedImage> args)
+    private bool IsContainStudentName(string screenResult, out StudentInfoData info)
     {
-        foreach (ARTrackedImage img in args.added)
+        int cnt = 0;
+        int studentIndex = -1;
+        for (int i = 0; i < _studentInfo.Infos.Count; i++)
         {
-            StartCoroutine(ScreenOcrLoop(img));
+            if (screenResult.Contains(_studentInfo.Infos[i].name))
+            {
+                cnt++;
+                studentIndex = i;
+                if (cnt >= 2)
+                {
+                    info = null;
+                    return false;
+                }
+            }
         }
 
-        foreach (ARTrackedImage img in args.updated)
+        if (cnt == 1)
         {
-            StartCoroutine(ScreenOcrLoop(img));
+            info = _studentInfo.Infos[studentIndex];
+            return true;
         }
+        
+        info = null;
+        return false;
     }
+
+    // private void OnTrackedImagesChanged(ARTrackablesChangedEventArgs<ARTrackedImage> args)
+    // {
+    //     foreach (ARTrackedImage img in args.added)
+    //     {
+    //         StartCoroutine(ScreenOcrLoop(img));
+    //     }
+    //
+    //     foreach (ARTrackedImage img in args.updated)
+    //     {
+    //         StartCoroutine(ScreenOcrLoop(img));
+    //     }
+    // }
 
     private IEnumerator CallClovaOCR_General(byte[] img, Action<string> onComplete)
     {
@@ -113,20 +150,40 @@ public class ImageTrackingOCR : MonoBehaviour
         onComplete?.Invoke(sb.ToString().Trim());
         isCapturing = false;
     }
+    
+    /// <summary>
+    /// 입력 문자열에서 영문자(A–Z, a–z)만 제거하고 반환합니다.
+    /// </summary>
+    public static string RemoveEnglish(string input)
+    {
+        if (string.IsNullOrEmpty(input))
+            return input;
+
+        var sb = new StringBuilder(input.Length);
+        foreach (char c in input)
+        {
+            // 영문자 범위가 아니면 추가
+            if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')))
+                sb.Append(c);
+        }
+        return sb.ToString();
+    }
+
 
     [SerializeField] private GameObject namePanelPrefab;
-    private Dictionary<TrackableId, GameObject> panels = new Dictionary<TrackableId, GameObject>();
+    private Dictionary<string, GameObject> panels = new Dictionary<string, GameObject>();
 
-    private void PlacePanel(ARTrackedImage image, StudentInfoData info)
+    private void PlacePanel(StudentInfoData info)
     {
-        if (!panels.TryGetValue(image.trackableId, out var panel))
+        if (!panels.TryGetValue(info.name, out var panel))
         {
             panel = Instantiate(namePanelPrefab);
-            panels[image.trackableId] = panel;
+            panel.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 0.2f;
+            panel.transform.rotation = Camera.main.transform.rotation;
+            panels[info.name] = panel;
+            panel.GetComponent<PersonMarkerController>().SetInfo(info);
+            UIManager.Instance.ShowTrackedNameText();
         }
-        panel.transform.position = image.transform.position;
-        panel.transform.rotation = Camera.main.transform.rotation;
-        panel.GetComponent<PersonMarkerController>().SetInfo(info);
     }
 
     #region DTO Classes
@@ -144,5 +201,4 @@ public class ImageTrackingOCR : MonoBehaviour
     [Serializable] private class Field        { public string inferText; }
     #endregion
 
-    // ─── 10. 확장: ICache 인터페이스 도입 후 MemoryCache/FileCache 교체 가능 ───
 }
