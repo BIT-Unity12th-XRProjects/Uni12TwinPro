@@ -23,7 +23,13 @@ public class UIManager : MonoBehaviour
     private SceneState _sceneState =  SceneState.Twin;
 
     [SerializeField] private TextMeshProUGUI _trackedNameText;
+
+    [SerializeField] private GameObject _pcPanel;
     
+    [SerializeField] private AzureDataController _azureDataController;
+
+    public event Action<uint> OffPCEvent;
+    public uint currentPcId { get; set; }
     public event Action EnableArrowUIEvent;
     public event Action DisableArrowUIEvent;
 
@@ -54,6 +60,10 @@ public class UIManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
+        if (_cameraController == null)
+        {
+            _cameraController = Camera.main.GetComponent<CameraController>();
+        }
         _cameraController.ReturnToDefaultPosition();
     }
 
@@ -110,5 +120,20 @@ public class UIManager : MonoBehaviour
     public void DisableArrowUI()
     {
         DisableArrowUIEvent?.Invoke();
+    }
+
+    public void ShowPCPanel()
+    {
+        _pcPanel.SetActive(true);
+    }
+
+    public void HidePCPanel()
+    {
+        _pcPanel.SetActive(false);
+    }
+
+    public void OnClickOKButton()
+    {
+        OffPCEvent?.Invoke(currentPcId);
     }
 }

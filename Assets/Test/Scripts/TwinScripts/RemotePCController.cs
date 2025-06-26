@@ -1,4 +1,6 @@
+using System;
 using System.ComponentModel;
+using Test.Scripts.TwinScripts;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -26,6 +28,12 @@ public class RemotePCController : MonoBehaviour
         _enablePower = false;
         _meshRenderer.enabled = false;
         _touchDetectManager.OnTouchDetectedEvent += OnClickPCPower;
+        UIManager.Instance.OffPCEvent += OffPC;
+    }
+
+    private void OnDisable()
+    {
+        UIManager.Instance.OffPCEvent -= OffPC;
     }
 
     private void OnDestroy()
@@ -38,18 +46,29 @@ public class RemotePCController : MonoBehaviour
 
     public async void OnClickPCPower()
     {
-        _enablePower = !_enablePower;
-        if (_azureDataController != null) await _azureDataController.SendRemotePCStateAsync(_enablePower, _pcId);
-
         if (_enablePower)
         {
-            Debug.Log("PC 전원 켜기");
-            _meshRenderer.enabled = true;
+            UIManager.Instance.ShowPCPanel();
+            UIManager.Instance.currentPcId = _pcId;
         }
         else
         {
-            Debug.Log("PC 전원 끄기");
+            _enablePower = true;
+            _meshRenderer.enabled = true;
+            if (_azureDataController != null)
+            {
+                await _azureDataController.SendRemotePCStateAsync(_enablePower, _pcId);
+            }
+        }
+    }
+
+    public async void OffPC(uint id)
+    {
+        if (id == _pcId)
+        {
             _meshRenderer.enabled = false;
+            _enablePower = false;
+            await _azureDataController.SendRemotePCStateAsync(false, _pcId);
         }
     }
 }
