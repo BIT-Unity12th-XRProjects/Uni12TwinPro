@@ -1,0 +1,4 @@
+{
+    "connectionString" : "HostName=Uni12TwinPro.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=ts51E0cBODPGFlLbDyoC7pZiHyzbP3wJ/AIoTODruRw=",
+    "deviceId" : "TestDevice"
+}

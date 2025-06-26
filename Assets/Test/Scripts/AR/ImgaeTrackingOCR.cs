@@ -2,6 +2,7 @@ using System;
  using System.Collections;
  using System.Collections.Generic;
  using System.Text;
+ using Test.Scripts.Data;
  using TMPro;
  using UnityEngine;
  using UnityEngine.Networking;
@@ -11,16 +12,20 @@ using System;
  public class ImageTrackingOCR : MonoBehaviour
  {
      [SerializeField] private TextMeshProUGUI _ocrText;
-     private string ocrInvokeUrl =
-         "https://ihkt8x14s5.apigw.ntruss.com/custom/v1/42961/4d97a29ae6ac8b38f41ff0314cbeea521e8ddd96bee84adffe1bcb7510ad4e12/general";
-     private string ocrSecretKey = "VHFlaU9SRGdUR0pxSUNxc2JWZXZraXhFUUttbEhGa0s=";
+
+     private OCRData _ocrData;
+     private string ocrInvokeUrl;
+     private string ocrSecretKey;
  
      private StudentInfo _studentInfo;
 
      private Coroutine _captureCoroutine;
      private void Awake()
      {
-         _studentInfo = new();
+         _studentInfo = new StudentInfo();
+         _ocrData = new OCRData();
+         ocrInvokeUrl = _ocrData.OcrDataModel.ocrInvokeUrl;
+         ocrSecretKey = _ocrData.OcrDataModel.ocrSecretKey;
      }
  
      void OnDisable()
