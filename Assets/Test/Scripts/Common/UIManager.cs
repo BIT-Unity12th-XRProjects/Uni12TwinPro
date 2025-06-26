@@ -1,7 +1,14 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
+public enum SceneState
+{
+    Twin,
+    AR,
+}
 
 public class UIManager : MonoBehaviour
 {
@@ -13,6 +20,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private string _arSceneName;
     [SerializeField] private Button _backButton;
 
+    private SceneState _sceneState =  SceneState.Twin;
+
+    [SerializeField] private TextMeshProUGUI _trackedNameText;
+    
     public event Action EnableArrowUIEvent;
     public event Action DisableArrowUIEvent;
 
@@ -66,6 +77,31 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene(_arSceneName);
     }
 
+    public void ChangeScene()
+    {
+        if (_sceneState == SceneState.AR)
+        {
+            SceneManager.LoadScene(_twinSceneName);
+            _sceneState = SceneState.Twin;
+        }
+        else if (_sceneState == SceneState.Twin)
+        {
+            SceneManager.LoadScene(_arSceneName);
+            _sceneState = SceneState.AR;
+        }
+    }
+
+    public void ShowTrackedNameText()
+    {
+        _trackedNameText.enabled = true;
+        Invoke("HideTrackedNameText", 0.5f);
+    }
+
+    public void HideTrackedNameText()
+    {
+        _trackedNameText.enabled = false;
+    }
+    
     public void EnableArrowUI()
     {
         EnableArrowUIEvent?.Invoke();
