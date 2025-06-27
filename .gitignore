@@ -85,3 +85,5 @@ crashlytics-build.properties
 /[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers.meta
 Assets/Resources/Json/AzureAPI.json
 Assets/Resources/Json/OCRAPI.json
+Assets/Resources/Json/AzureAPI.json.meta
+Assets/Resources/Json/OCRAPI.json.meta
